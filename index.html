@@ -1,1 +1,185 @@
-hello
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> HTML Resume</title>
+		<link rel="stylesheet" type="text/css" href="stylesheet.css">
+	</head>
+	<body>
+		<div id="background">
+		</div>
+		<!--
+		<div class="header"> 
+			<div class="header-layer"></div>
+			<p id="name"> Andrew Kulpa </p>
+			<a href="mailto:aj-kulpa@wiu.edu"><p id="email">aj-kulpa@wiu.edu</p></a>
+		</div> -->
+		<!-- Add this menu below, redefined-->
+		<!-- Resume, make mutable Security/Technology/General versions-->
+		<!-- About Me: Usual; links to LinkedIn, GitHub, Facebook, Email, etc., Organizational status-->
+		<!-- LinkedIn Profile: https://www.linkedin.com/pub/andrew-kulpa/b6/b04/217-->
+		<!-- Projects: List and describe, Link to GitHub-->
+		
+		<div class="menu">
+			<div id="email">
+			<a href="mailto:aj-kulpa@wiu.edu"><p>Andrew Kulpa</p></a>
+			</div>
+			<div>
+			<a href=# id="pane1">Resume</a>
+			<a href=# id="pane2">About Me</a> <!--Photoshop me with darker bg/etc -->
+			<a href=# id="pane3">Projects </a> 
+			<a href=#>Fill</a>
+			<a href=#>Fill</a>
+			<a href=#>Home</a><!-- Developer/ETC Contact/Resume links in center of page -->
+			</div>
+		</div>
+		<div id="about-container">
+			<div class="Resume-Sidebar">
+				<div class="side-nav">
+					<a href=# id="IT-nav">IT</a>
+					<a href=# id="Sec-nav">Security</a>
+				</div>
+			</div>
+			<section class="Resume" id="pane1"> <!--Tech Version-->
+				<h4> Objective </h4>
+				<p> Through my education and future job experience, I hope to advance within the sectors of Security and Information Technology </p>
+				
+				<h4> Experience </h4>
+				<h5> Internee (IT), Packaging Coordinators Inc. (June 2015-August 2015) </h5>
+				<ul>
+					<li> Analyzed and optimized standard operating procedures, scripts, and installation procedures </li>
+					<li> Provided Training and documentation as a consultant within meetings and training sessions </li>
+					<li> Acknowledged by the GM for learning and applying VBA to optimize security auditing practices through analysis and Lean Six Sigma principles </li>
+					<li> Provided tiered support and liaisoned between administrators and company personnel, both independently and as a team. </li>
+					<li>Applied various security practices to keep information confidential, available, and backed-up.</li>
+				</ul>
+				<h5> Computer Technician, Western Illinois University (January 2015-Present) </h5>
+				<ul>
+					<li> Applied advanced hardware and software troubleshooting procedures to computers, printers, and other devices. </li>
+					<li> Maintain that computers throughout the library are fully-operational at all times. </li>
+					<li> Provide interference for Assistant System and System Administrators. </li>
+				</ul>
+
+				<div class="container">
+					<h4>Skills </h4> <!-- Split into 2 columns of Skills-(left/right)-->
+					<div id="IT">
+						<div id="left">
+							<ul>
+								<li> Knowledgeable in: Java, C, C++, Python, Intel x86 ASM, VBA, HTML, Javascript, CSS </li>
+								<li> Risk/Threat Assessment </li>
+								<li> Goal Setting/Attainment </li>
+								<li> Data Analysis / Response Implementation </li>
+								<li> Independent and Team-Based Experience </li>
+							</ul>
+						</div>
+
+						<div id="right">
+							<ul>
+								<li> Adept with OS X, Windows, Unix/Linux </li>
+								<li> Training Experience </li>
+								<li> Computer Architectural Understanding </li>
+								<li> Proficient in Microsoft and Adobe packages </li>
+								<li> Communication and Leadership Skills </li>
+							</ul>
+						</div>
+					</div>
+					<div id="Security">
+						<div id="left">
+							<ul>
+								<li> Advanced IT Skills</li>
+								<li> Risk/Threat Assessment </li>
+								<li> Goal Setting/Attainment </li>
+								<li> Data Analysis / Response Implementation </li>
+								<li> Independent and Team-Based Experience </li>
+							</ul>
+						</div>
+
+						<div id="right">
+							<ul>
+								<li> Documentation/ Quality Improvement  </li>
+								<li> Training Experience </li>
+								<li> Incident Handling / Analysis </li>
+								<li> Proficient in Microsoft and Adobe packages </li>
+								<li> Communication and Leadership Skills </li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="container" style="float:left">
+				<h4 > Education </h4>
+				<h5> Bachelor of Science in Law Enforcement and Justice Administration (2013-Present)</h5>
+				<ul>
+					<li> Deans List every semester </li>
+					<li> Majors: Law Enforcement and Justice Administration / Computer Science </li>
+
+					<li> Minor: Homeland Security </li>
+					<li> GPA: 3.968 </li>
+				</ul>
+				</div>
+			</section>
+			<section class="About">
+				<p>Picture to the left? </p>
+				<p>age</p>
+				<p>siblings</p>
+				<p>marital status </p>
+				<p>children</p>
+				<p>career</p>
+				<p>hobbies</p>
+				<p>interests</p>
+				<p>educational Background </p>
+				<p>hometown</p>
+				<p>Link to Facebook, LinkedIn</p>
+			</section>
+			<section class="Projects">
+				<p>CSA Website// this website</p>
+				<p>RPS Bot + link to github (fork me), etc</p>
+				<p>Upvote Bot + link to github (fork me), etc</p>
+				<p>GameBoy Game + photo of it</p>
+				<p> </p>
+
+			</section>
+		</div>
+	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript">
+			jQuery(document).ready(function($){
+				var currentpane = "pane1";
+				var currentnav = "IT-nav";
+				$(".About").hide();
+				$(".Projects").hide();
+				$("#Security").hide();
+				$('a').click(function(){
+					var id=$(this).attr('id');
+					if(id==="pane1" && currentpane != "pane1"){
+						$("section").fadeOut(400).delay(450);
+						$(".Resume").fadeIn(400);
+						$(".Resume-Sidebar").fadeIn(400);
+						currentnav = "IT-nav"
+						currentpane = "pane1";
+					}
+					else if(id==="pane2" && currentpane != "pane2"){
+						$("section").fadeOut(400).delay(450);
+						$(".Resume-Sidebar").fadeOut(400).delay(450);
+						$(".About").fadeIn(400);
+						currentpane = "pane2";
+					}
+					else if(id==="pane3" && currentpane != "pane3"){
+						$("section").fadeOut(400).delay(450);
+						$(".Resume-Sidebar").fadeOut(400).delay(450);
+						$(".Projects").fadeIn(400);
+						currentpane = "pane3";
+					}
+					else if (id==="IT-nav" && currentnav != "IT-nav"){
+						$("#Security").hide();
+						$("#IT").fadeIn(600);
+						currentnav = "IT-nav";
+					}
+					else if (id==="Sec-nav" && currentnav != "Sec-nav"){
+						$("#IT").hide();
+						$("#Security").fadeIn(600);
+						currentnav = "Sec-nav";
+					}
+				});
+			});
+	</script>
+	</body>
+</html>
