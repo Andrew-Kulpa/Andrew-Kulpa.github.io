@@ -1,29 +1,346 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="Andrew Kulpa - Portfolio Website">
+		<meta name="author" content="Andrew Kulpa">
 		<title>Andrew Kulpa - Software Developer</title>
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.2.1/cosmo/bootstrap.min.css" integrity="sha384-BmPRQ4EzBa9ifYo2LjomrSZ28x2GHvKNtv599SfxGvi39OQfRzluOw+sLUfxPOOD" crossorigin="anonymous">
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
 		<link rel="stylesheet" type="text/css" href="stylesheet.css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 	</head>
-	<body>
-		<div class="container header">
-			<div class="row justify-content-md-center align-items-center h-100">
-				<div class="col-md-auto">
-					<h1 class="header-name text-center font-weight-bold">Andrew Kulpa</h1>
-					<h2 class="header-role text-center font-weight-bold" style="color:#05386B">Software Developer</h2>
-				</div>
-			</div>			
-		</div>
-		<nav class="Navigation show">
-			<ul>
-				<li>
-					<a href="#">"Github"</a>
-				</li>
+	<body id="page-top">
+		<!-- Navigation -->
+		<a class="menu-toggle rounded" href="#">
+			<i class="fas fa-bars"></i>
+		</a>
+		<nav id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+			<li class="sidebar-brand">
+				<a class="js-scroll-trigger" href="#page-top">Andrew Kulpa</a>
+			</li>
+			<li class="sidebar-nav-item">
+				<a class="js-scroll-trigger" href="#page-top">Home</a>
+			</li>
+			<li class="sidebar-nav-item">
+				<a class="js-scroll-trigger" href="#about">About</a>
+			</li>
+			<li class="sidebar-nav-item">
+				<a class="js-scroll-trigger" href="#services">Services</a>
+			</li>
+			<li class="sidebar-nav-item">
+				<a class="js-scroll-trigger" href="#portfolio">Portfolio</a>
+			</li>
+			<li class="sidebar-nav-item">
+				<a class="js-scroll-trigger" href="#contact">Contact</a>
+			</li>
 			</ul>
 		</nav>
-		<section class="About"></section>
-		<section class="Works"></section>
-		<!-- Google Anlytics-->
+	
+		<!-- Header -->
+		<header class="masthead d-flex">
+			<div class="container text-center my-auto">
+				<h1 class="mb-1">Andrew Kulpa</h1>
+				<h3 class="mb-5">
+					<em>Software Developer</em>
+				</h3>
+				<a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
+				</div>
+			<div class="overlay"></div>
+		</header>
+	
+		<!-- About -->
+		<section class="content-section bg-light" id="about">
+			<div class="container text-center">
+			<div class="content-section-heading">
+				<!-- <h3 class="text-secondary mb-0">Services</h3> -->
+				<h2 class="mb-5">About</h2>
+			</div>
+			<div class="row mb-5">
+				<div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+					<span class="about-icon rounded-circle mx-auto mb-1">
+						<i class="far fa-gem"></i>
+					</span>
+					<h4>
+						<strong>World-Class Apps</strong>
+					</h4>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+					<span class="about-icon rounded-circle mx-auto mb-1">
+							<i class="fas fa-paint-roller"></i>
+					</span>
+					<h4>
+						<strong>Tailored To Your Needs</strong>
+					</h4>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5 mb-md-0">
+					<span class="about-icon mx-auto mb-1">
+						<i class="fas fa-robot"></i>
+					</span>
+					<h4>
+						<strong>With Automation In Mind</strong>
+					</h4>
+				</div>
+				<div class="col-lg-3 col-md-6">
+					<span class="about-icon mx-auto mb-1">
+						<i class="far fa-heart"></i>
+					</span>
+					<h4>
+						<strong>Built With Love</strong>
+					</h4>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-1 col-md-1 col-sm-0"></div>
+				<div class="col-lg-5 col-md-5 mb-5 mb-lg-0">
+					<h3 class="text-right" style="font-size:2.3rem;">
+						Hi. I'm Andrew, a software developer from Rockford, Illinois.
+						Please take a look around!
+					</h3>
+				</div>
+				<div class="col-lg-6 col-md-6 mb-5 mb-lg-0">
+					<p class="text-left font-weight-bold" style="line-height:1.9rem; font-size:1.1rem;">
+						I am passionate about developing great software that improves the lives of others.
+						I specialize in creating software that automates and streamlines large system processes, 
+						such as syncs of data and administrative tasks. What would you do if you could focus on 
+						what is important?
+					</p>
+				</div>
+			</div>
+		</div>
+		</section>
+	
+		<!-- Languages and Libraries -->
+		<section class="content-section bg-primary text-white text-center" id="services">
+			<div class="container">
+			<div class="content-section-heading">
+				<h3 class="text-secondary mb-0">Skills</h3>
+				<h2 class="mb-5">Languages / Libraries</h2>
+			</div>
+			<div class="row">
+				<div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+					<span class="service-icon rounded-circle mx-auto mb-3">
+						<i class="far fa-gem"></i>
+					</span>
+					<h4>
+						<strong>Ruby</strong>
+					</h4>
+					<p class="mb-1">Sequel, JSON, YAML, LibXML, Selenium</p>
+					<p class="text-faded mb-0">Identity data synchronization, database connections, and Google Calendar API integrations</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+					<span class="service-icon rounded-circle mx-auto mb-3">
+						<i class="fab fa-python"></i>
+					</span>
+					<h4>
+						<strong>Python</strong>
+					</h4>
+					<p class="mb-1">Tweepy, PRAW, Tensorflow, Pandas, NumPy</p>
+					<p class="text-faded mb-0">Social media bots, AI data classification, and Flask web server tinkering</p>
+				</div>
+				<div class="col-lg-3 col-md-6 mb-5 mb-md-0">
+					<span class="service-icon rounded-circle mx-auto mb-3">
+						<i class="fab fa-java"></i>
+					</span>
+					<h4>
+						<strong>Java</strong>
+					</h4>
+					<p class="mb-1">Maven, JavaDocs, Jsoup</p>
+					<p class="text-faded mb-0">Undergraduate DS/A projects, web proxy/spidering, and basic android applications</p>
+				</div>
+				<div class="col-lg-3 col-md-6">
+					<span class="service-icon rounded-circle mx-auto mb-3">
+						<i class="fab fa-php"></i>
+					</span>
+					<h4>
+						<strong>PHP</strong>
+					</h4>
+					<p class="mb-1">Laravel, CAS/Subfission, Guzzle</p>
+					<p class="text-faded mb-0">Account self-service portals, security policy-based updates, and learning management system integrations</p>
+				</div>
+			</div>
+			</div>
+		</section>
+	
+		<!-- Callout -->
+		<!-- <section class="callout">
+			<div class="container text-center">
+			<h2 class="mx-auto mb-5">Welcome to
+				<em>your</em>
+				next website!</h2>
+			<a class="btn btn-primary btn-xl" href="https://startbootstrap.com/template-overviews/stylish-portfolio/">Download Now!</a>
+			</div>
+		</section> -->
+	
+		<!-- Portfolio -->
+		<section class="content-section" id="portfolio">
+			<div class="container">
+			<div class="content-section-heading text-center">
+				<h3 class="text-secondary mb-0">Portfolio</h3>
+				<h2 class="mb-5">Recent Projects</h2>
+			</div>
+			<div class="row cards-row mb-5">
+				<div class="col-md-4 project-tile ">
+					<div class="card mx-auto mb-3" style="width: 18rem;">
+						<img class="card-img-top" src="https://images.pexels.com/photos/50987/money-card-business-credit-card-50987.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Card image cap">
+						<div class="card-body">
+							<h5 class="card-title">Credit Card Fraud Classifier</h5>
+							<p class="card-text">A neural network that classifies whether credit card transactions are fraudulent using Tensorflow, SciKit, NumPy, and Pandas.</p>
+							<a href="https://github.com/Andrew-Kulpa/Fraud-Detection-Classifier" class="btn btn-primary">Source Code</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 project-tile">
+					<div class="card mx-auto mb-3" style="width: 18rem;">
+						<img class="card-img-top" src="https://images.pexels.com/photos/235615/pexels-photo-235615.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Card image cap">
+						<div class="card-body">
+							<h5 class="card-title">OpenGL SSAO</h5>
+							<p class="card-text">Animplementation of Screen-Space Ambient Occlusion using C++ and GLSL to appoximate the occlusion factor of objects in a G-Buffer in OpenGL.</p>
+							<a href="https://github.com/drockwood94/Advanced-Graphics-Final" class="btn btn-primary">Source Code</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 project-tile">
+					<div class="card mx-auto mb-3" style="width: 18rem;">
+						<img class="card-img-top" src="https://images.pexels.com/photos/76969/cold-front-warm-front-hurricane-felix-76969.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Card image cap">
+						<div class="card-body">
+							<h5 class="card-title">Weather Data Visualization</h5>
+							<p class="card-text">A Tableau story from a National Climatic Data Center data set also using a KPI based upon weather event costs and casualties.</p>
+							<a href="https://public.tableau.com/profile/daniel.rockwood#!/vizhome/WIU-CS567-FinalProject-WeatherStory/WeatherStory" class="btn btn-primary">Source Code</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row cards-row mb-5">
+				<div class="col-md-4 project-tile ">
+					<div class="card mx-auto mb-3" style="width: 18rem;">
+						<img class="card-img-top" src="https://images.pexels.com/photos/762888/pexels-photo-762888.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Card image cap">
+						<div class="card-body">
+							<h5 class="card-title">ProxySpider</h5>
+							<p class="card-text">A Java forward proxy and sitemapper with automated JavaDocs and Jar building via Maven.</p>
+							<a href="https://github.com/Andrew-Kulpa/ProxySpider" class="btn btn-primary">Source Code</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 project-tile">
+					<div class="card mx-auto mb-3" style="width: 18rem;">
+						<img class="card-img-top" src="https://images.pexels.com/photos/247932/pexels-photo-247932.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Card image cap">
+						<div class="card-body">
+							<h5 class="card-title">Breast Cancer Classifier</h5>
+							<p class="card-text">An artificial neural network that classifies breast cancer as malignant or benign using Tensorflow, Numpy, and Pandas.</p>
+							<a href="https://github.com/Andrew-Kulpa/AI-cancer-classifier" class="btn btn-primary">Source Code</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 project-tile">
+					<div class="card mx-auto mb-3" style="width: 18rem;">
+						<img class="card-img-top" src="https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Card image cap">
+						<div class="card-body">
+							<h5 class="card-title">VulnApp</h5>
+							<p class="card-text">A vulnerable LAMP web application that automatically builds using Chef Solo and Vagrant.</p>
+							<a href="https://github.com/Andrew-Kulpa/Vulnapp" class="btn btn-primary">Source Code</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row cards-row mb-5">
+				<div class="col-md-4 project-tile">
+					<div class="card mx-auto mb-3" style="width: 18rem;">
+						<img class="card-img-top" src="https://images.pexels.com/photos/159438/android-tv-game-controller-game-controller-video-game-controller-android-game-controller-159438.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Card image cap">
+						<div class="card-body">
+							<h5 class="card-title">Asteroids2.0</h5>
+							<p class="card-text">A Swift-based iOS game obviously based upon the iconic Asteroids game. Works on tablets and other apple devices.</p>
+							<a href="https://github.com/Andrew-Kulpa/Asteroids_2.0_app" class="btn btn-primary">Source Code</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 project-tile">
+					<div class="card mx-auto mb-3" style="width: 18rem;">
+						<img class="card-img-top" src="https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Card image cap">
+						<div class="card-body">
+							<h5 class="card-title">C Port Scanner</h5>
+							<p class="card-text">A port scanner written in C. As a basic command line tool, it can scan any ports specified for any specified addresses.</p>
+							<a href="https://github.com/Andrew-Kulpa/c-port-scanner" class="btn btn-primary">Source Code</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 project-tile">
+					<div class="card mx-auto mb-3" style="width: 18rem;">
+						<img class="card-img-top" src="https://images.pexels.com/photos/1068523/pexels-photo-1068523.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="Card image cap">
+						<div class="card-body">
+							<h5 class="card-title">Rock-Paper-Scissors Bot</h5>
+							<p class="card-text">A Reddit bot that can play Rock-Paper-Scissors with users via submission comments and mentions.</p>
+							<a href="https://github.com/Andrew-Kulpa/RedditRPSBot" class="btn btn-primary">Source Code</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Call to Action -->
+		<section class="content-section bg-primary text-white" id="contact">
+			<div class="container text-center">
+				<div class="content-section-heading">
+					<h3 class="text-secondary mb-0">Currently looking for opportunities in the Greater Chicago area!</h3>
+					<h2 class="mb-4">Contact Me</h2>
+				</div>
+			<div class="row mb-5 align-items-center">
+				<div class="col-lg-1 mx-auto"></div>
+				<a href="tel:+18152624659" class="col-md-4 col-lg-4 col-sm-4 btn btn-xl btn-light mr-3 ml-3 mb-3"><i class="fas fa-phone"></i> 815-262-4659</a>
+				<a href="mailto:cliff.kulpa@gmail.com" class="col-md-4 col-lg-4 col-sm-4 btn btn-xl btn-dark mr-3 ml-3 mb-3"><i class="far fa-envelope"></i> cliff.kulpa@gmail.com</a>
+				<div class="col-lg-1 mx-auto"></div>
+			</div>
+		</section>
+	
+		<!-- Map -->
+		<!-- <section id="contact" class="map">
+			<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe>
+			<br/>
+			<small>
+			<a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a>
+			</small>
+		</section> -->
+	
+		<!-- Footer -->
+		<footer class="footer text-center">
+			<div class="container">
+			<ul class="list-inline mb-5">
+				<li class="list-inline-item">
+					<a class="social-link rounded-circle text-white mr-3" href="https://www.linkedin.com/in/andrewkulpa/">
+						<i class="fab fa-linkedin-in"></i>
+					</a>
+				</li>
+				<li class="list-inline-item">
+					<a class="social-link rounded-circle text-white mr-3" href="https://stackoverflow.com/users/7867847/andrew-kulpa">
+							<i class="fab fa-stack-overflow"></i>
+					</a>
+				</li>
+				<li class="list-inline-item">
+					<a class="social-link rounded-circle text-white" href="https://github.com/Andrew-Kulpa">
+						<i class="fab fa-github"></i>
+					</a>
+				</li>
+			</ul>
+			<p class="text-muted small mb-0">Copyright &copy; Andrew Kulpa 2019</p>
+			</div>
+		</footer>
+
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+			<i class="fas fa-angle-up"></i>
+		</a>
+		<script
+			src="https://code.jquery.com/jquery-3.3.1.min.js"
+			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			crossorigin="anonymous">
+		</script>
+		<script
+		src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+		integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+		crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.compatibility.js"></script>
+		<script src="stylish-portfolio.js"></script>
 	</body>
 </html>
