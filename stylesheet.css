@@ -234,6 +234,16 @@ h6 {
   max-width: 30rem;
 }
 
+.service-icon:hover {
+    color: #155d74;
+    background-color: #ecb807;
+    opacity:50%;
+    -webkit-transition: color 1s; /* Safari */
+    transition: color 1s;
+    -webkit-transition: background-color 1s; /* Safari */
+    transition: background-color 1s;
+}
+
 .portfolio-item {
   display: block;
   position: relative;
