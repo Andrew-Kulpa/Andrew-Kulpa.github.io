@@ -135,7 +135,7 @@
 
 <p>The second step to setting up an automatic deployment pipeline for your Jekyll site is much more involved. We can break this down into a few easily chewed parts.</p>
 
-<h4 id="1-getting-us-all-on-the-same-page">1. Getting Us All on the Same Page</h4>
+<h4 id="getting-us-all-on-the-same-page">Getting Us All on the Same Page</h4>
 
 <p>First, we need to make sure our repository is configured correctly. If there is anything stored in the <code class="highlighter-rouge">vendor</code> directory, make sure to exclude it from the build process by adding the following line to your Jekyll <code class="highlighter-rouge">_config.yml</code> file:</p>
 
@@ -183,16 +183,18 @@
     <span class="na">branch</span><span class="pi">:</span> <span class="s">master</span>
 </code></pre></div></div>
 
+<h5 id="deployment-breakdown">Deployment Breakdown</h5>
+
 <p>This configuration does quite a bit, so I’ll break it down.</p>
 
+<p>First, we tell Travis CI to use Ruby and Bundler during the build process.</p>
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">language</span><span class="pi">:</span> <span class="s">ruby</span>
 <span class="na">rvm</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">2.5.1</span>
 <span class="na">cache</span><span class="pi">:</span> <span class="s">bundler</span> <span class="c1"># caching bundler gem packages will speed up build</span>
 </code></pre></div></div>
 
-<p>This tells Travis CI to use Ruby and Bundler during the build process.</p>
-
+<p>Then, we want to halt the build upon error, in case later script parts fail to process as expected. After this, we can build the site and use <code class="highlighter-rouge">htmlproofer</code> to test the rendered HTMLfiles to sure the quality of the site.</p>
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">before_script</span><span class="pi">:</span>
 <span class="na">script</span><span class="pi">:</span> 
  <span class="pi">-</span> <span class="s">set -e</span>
@@ -200,8 +202,7 @@
  <span class="pi">-</span> <span class="s">bundle exec htmlproofer --http-status-ignore "999" ./_site</span> <span class="c1"># test site, but ignore any 999 errors (e.g. LinkedIn checks)</span>
 </code></pre></div></div>
 
-<p>We want to halt the build upon error, in case later script parts fail to process as expected. After this, we can build the site and use <code class="highlighter-rouge">htmlproofer</code> to test the rendered HTMLfiles to sure the quality of the site.</p>
-
+<p>We also only want to automatically generate site content from the <code class="highlighter-rouge">master</code> branch and speed up the <code class="highlighter-rouge">html-proofer</code> installation.</p>
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">branches</span><span class="pi">:</span> <span class="c1"># branch whitelist, only for GitHub Pages</span>
   <span class="na">only</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="s">master</span>
@@ -210,8 +211,7 @@
   <span class="pi">-</span> <span class="s">NOKOGIRI_USE_SYSTEM_LIBRARIES=true</span> <span class="c1"># faster html-proofer install</span>
 </code></pre></div></div>
 
-<p>We only want to automatically generate site content from the <code class="highlighter-rouge">master</code> branch and speed up the <code class="highlighter-rouge">html-proofer</code> installation.</p>
-
+<p>We then make sure that the development files for the OpenSSL flavor of libcurl are available. Optionally, we also disable the email notifications for the build process.</p>
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">addons</span><span class="pi">:</span>
   <span class="na">apt</span><span class="pi">:</span>
     <span class="na">packages</span><span class="pi">:</span>
@@ -220,8 +220,7 @@
   <span class="na">email</span><span class="pi">:</span> <span class="no">false</span>
 </code></pre></div></div>
 
-<p>We then make sure that the development files for the OpenSSL flavor of libcurl are available. Optionally, we also disable the email notifications for the build process.</p>
-
+<p>In the last part of the <code class="highlighter-rouge">.travis.yml</code> we use the <a href="https://docs.travis-ci.com/user/deployment/pages/">Github Pages Deployment Provider</a>. The site by default is built to the <code class="highlighter-rouge">./_site</code> local directory. A <a href="https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line">personal access token</a> is needed at this point too. Once you have created your personal access token and determined the target repository, this information can easily be defined using secure variables in Travis CI. The last few lines determine the source and target branches. As the example repository is a master to master deployment from two different repositories, the configuration is as demonstrated, but your configuration may differ.</p>
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">deploy</span><span class="pi">:</span>
   <span class="na">provider</span><span class="pi">:</span> <span class="s">pages</span>
   <span class="na">local-dir</span><span class="pi">:</span> <span class="s">./_site</span>
@@ -234,8 +233,6 @@
   <span class="na">on</span><span class="pi">:</span>
     <span class="na">branch</span><span class="pi">:</span> <span class="s">master</span>
 </code></pre></div></div>
-
-<p>In this last part of the <code class="highlighter-rouge">.travis.yml</code> we use the <a href="https://docs.travis-ci.com/user/deployment/pages/">Github Pages Deployment Provider</a>. The site by default is built to the <code class="highlighter-rouge">./_site</code> local directory. A <a href="https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line">personal access token</a> is needed at this point too. Once you have created your personal access token and determined the target repository, this information can easily be defined using secure variables in Travis CI. The last few lines determine the source and target branches. As the example repository is a master to master deployment from two different repositories, the configuration is as demonstrated, but your configuration may differ.</p>
 
 <h4 id="update-gemfile">Update Gemfile</h4>
 
