@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Parsing JSON with Golang | Andrew Kulpa Personal Website</title>
+<meta name="msvalidate.01" content="80972D31A62F6BBDA100949B41EA9E91" />
+<meta name="description" content="Parsing common data formats like JSON is a very common and necessary task for anyone using a typical RESTful API. In this blog post, we will go through the basics o...">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="og:url" content="https://andrew.kulpa.dev/2019/08/06/parsing-json-with-golang.html">
+<meta name="og:title" content="Parsing JSON with Golang">
+<meta name="og:type" content="article">
+<meta name="og:image" content="">
+<meta name="og:description" content="Parsing common data formats like JSON is a very common and necessary task for anyone using a typical RESTful API. In this blog post, we will go through the basics o...">
+
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+<!-- CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/font-awesome.min.css" />
+<link rel="stylesheet" href="/css/airspace.css" />
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/ionicons.min.css" />
+<link rel="stylesheet" href="/css/animate.css" />
+<link rel="stylesheet" href="/css/responsive.css" />
+<link rel="stylesheet" href="/css/syntax.css" />
+
+
+<!-- Js -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+<script src="/js/vendor/jquery-1.10.2.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/plugins.js"></script>
+<script src="/js/min/waypoints.min.js"></script>
+<script src="/js/jquery.counterup.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+<!--
+/*
+ * Airspace
+ * Ported to Jekyll by Andrew Lee
+ * Extended as a professional portfolio site by Andrew Kulpa
+ * https://github.com/ndrewtl/airspace-jekyll
+ * Designed and Developed by ThemeFisher
+ * https://themefisher.com/
+ *
+ */
+-->
+
+
+  </head>
+  <body>
+
+
+    <!-- Header Start -->
+<header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- header Nav Start -->
+      <nav class="navbar navbar-expand-lg navbar-light" id="nav-bar">
+          <a class="navbar-brand" href="/" id="header-img"><img id="brand-icon" src="/img/logo.png" alt="site brand logo"/></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse navbar-default" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-sm-3 justify-content-end">
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/">Home </a>
+                  </li>
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/projects/">Projects</a>
+                  </li>
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/experience/">Experience</a>
+                  </li>
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/blog/">Blog</a>
+                  </li>
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/contact/">Contact</a>
+                  </li>
+              </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header><!-- header close -->
+
+
+
+    <div class="post">
+  <!-- Wrapper Start -->
+  <section id="intro" style="border: 1px dotted #ddd;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="block">
+            <h1>Parsing JSON with Golang</h1>
+            <div class="post-info-wrapper">
+              <p class="italic">By <span class="bold">Andrew Kulpa</span> on <span class="bold">August 6, 2019</span></p>
+            </div>
+            <hr />
+            <p><p>Objectives:</p>
+<ul>
+  <li><a href="#parsing-json">Parsing JSON</a></li>
+  <li><a href="#creating-json-from-go-structs">Creating JSON from Go Structs</a></li>
+  <li><a href="#json-tags">JSON Tags</a></li>
+  <li><a href="#reading-json-files">Reading JSON Files</a></li>
+  <li><a href="#encoding-unstructured-data">Encoding Unstructured Data</a></li>
+</ul>
+
+<p>Parsing common data formats like JSON is a very common and necessary task for anyone using a typical RESTful API. In this blog post, we will go through the basics of using JSON with Go. We will look at the main JSON data types and how to work with them simply and idiomatically.</p>
+
+<p>(What is JSON)</p>
+
+<h2 id="parsing-json">Parsing JSON</h2>
+
+<p>The Go standard library provides us with all we need through the json package. When working with any JSON string, the easiest way to parse it is:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">(</span>
+	<span class="s">"encoding/json"</span>
+	<span class="s">"fmt"</span>
+<span class="p">)</span>
+<span class="n">jsonString</span> <span class="o">=</span> <span class="o">:=</span> <span class="s">`{"key":"val"}`</span>
+
+<span class="c">// &amp;result is the memory address for the variable we will the parsed data</span>
+<span class="n">json</span><span class="o">.</span><span class="n">Unmarshall</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="n">jsonString</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now typically we would want to formally define the JSON result as some structured data. This is incredibly easy using Go <code class="highlighter-rouge">struct</code>. Lets say, for instance, we are receiving a json response for a course from a learning management system. Every course has a <code class="highlighter-rouge">courseNumber</code>, <code class="highlighter-rouge">department</code>, and <code class="highlighter-rouge">description</code> field:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"courseNumber"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CS"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Intro to Computer Science"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In order for us to work effectively with this data, we need to create a <code class="highlighter-rouge">struct</code> that conforms to this json schema. With that in mind, we will create a course struct with the same attributes:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">type</span> <span class="n">Course</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="n">CourseNumber</span> <span class="kt">int</span>
+    <span class="n">Department</span> <span class="kt">string</span>
+    <span class="n">Description</span> <span class="kt">string</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Then we will unmarshall just like before:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">courseJSONData</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">(</span><span class="s">`
+    {
+        "courseNumber":101,
+        "department": "CS",
+        "description": "Intro to Computer Science"
+    }
+`</span><span class="p">)</span>
+<span class="k">var</span> <span class="n">course</span> <span class="n">Course</span>
+<span class="n">json</span><span class="o">.</span><span class="n">Unmarshal</span><span class="p">(</span><span class="n">courseJSONData</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">course</span><span class="p">)</span>
+<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"CourseNumber: %d, Department: %s, Description: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">course</span><span class="o">.</span><span class="n">CourseNumber</span><span class="p">,</span> <span class="n">course</span><span class="o">.</span><span class="n">Department</span><span class="p">,</span> <span class="n">course</span><span class="o">.</span><span class="n">Description</span><span class="p">)</span>
+<span class="c">// prints: CourseNumber: 101, Department: CS, Description: Intro to Computer Science</span>
+</code></pre></div></div>
+
+<h2 id="creating-json-from-go-structs">Creating JSON from Go Structs</h2>
+
+<p>Let’s say we needed to process the JSON we received in Go and return as JSON data afterwards. This wouldn’t be all to uncommon. Well, thankfully creating nearly identical JSON data from the same Go <code class="highlighter-rouge">struct</code> is even easier! Take for example the following code:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="n">course</span><span class="p">)</span>
+<span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="c">//prints: {"CourseNumber":101,"Department":"CS","Description":"Intro to Computer Science"}</span>
+</code></pre></div></div>
+
+<h2 id="json-tags">JSON Tags</h2>
+<p>While it is incredibly easy to output JSON from Go <code class="highlighter-rouge">structs</code>, sometimes you need a little bit more than just spitting out the same exact object. This could be handled by updating the struct in-place or modifying upon inserting into a new struct. The following example demonstrates the latter:</p>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c">// Course JSON struct meant to alter unmarshal'd JSON data after marshal'ing again</span>
+<span class="k">type</span> <span class="n">AlteredCourse</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">CourseNumber</span> <span class="kt">int</span>    <span class="s">`json:"courseNum"`</span>
+	<span class="n">Department</span>   <span class="kt">string</span> <span class="s">`json:"dept"`</span>
+	<span class="n">Description</span>  <span class="kt">string</span> <span class="s">`json:"title"`</span>
+<span class="p">}</span>
+
+<span class="k">var</span> <span class="n">alteredCourse</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">AlteredCourse</span><span class="p">{</span>
+  <span class="n">CourseNumber</span><span class="o">:</span> <span class="n">course</span><span class="o">.</span><span class="n">CourseNumber</span><span class="p">,</span>
+  <span class="n">Department</span><span class="o">:</span>   <span class="n">course</span><span class="o">.</span><span class="n">Department</span><span class="p">,</span>
+  <span class="n">Description</span><span class="o">:</span>  <span class="n">course</span><span class="o">.</span><span class="n">Description</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">alteredData</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="n">alteredCourse</span><span class="p">)</span>
+<span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">alteredData</span><span class="p">)</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="c">//prints: {"courseNum":101,"dept":"CS","Title":"Intro to Computer Science"}</span>
+</code></pre></div></div>
+<p>As demonstrated above, we first defined a new struct called <code class="highlighter-rouge">AlteredCourse</code> with something new called JSON tags. These JSON tags allow us to have different JSON object keys than the name of the struct variable that they came from. For instance, instead of outputing the key <code class="highlighter-rouge">CourseNumber</code> we output <code class="highlighter-rouge">courseNum</code>. This follows for the remaining JSON tags.</p>
+
+<h2 id="reading-json-files">Reading JSON Files</h2>
+
+<h2 id="encoding-unstructured-data">Encoding Unstructured Data</h2>
+
+<p>Now the rule of thumb is if you can use a <code class="highlighter-rouge">struct</code> you should. I won’t try and beat that horse any more than the community already does. Instead, we can circumvent the need for a <code class="highlighter-rouge">struct</code> by using a map. Take a look at the following code snippet:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">unstructuredCourseData</span> <span class="o">:=</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span>
+	<span class="s">"courseNumber"</span><span class="o">:</span> <span class="m">101</span><span class="p">,</span>
+	<span class="s">"department"</span><span class="o">:</span>   <span class="s">"CS"</span><span class="p">,</span>
+	<span class="s">"description"</span><span class="o">:</span>  <span class="s">"Intro to Computer Science"</span><span class="p">,</span>
+	<span class="s">"enrollees"</span><span class="o">:</span> <span class="p">[]</span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span>
+		<span class="p">{</span>
+			<span class="s">"id"</span><span class="o">:</span>   <span class="m">555432432</span><span class="p">,</span>
+			<span class="s">"role"</span><span class="o">:</span> <span class="m">6</span><span class="p">,</span>
+		<span class="p">},</span>
+		<span class="p">{</span>
+			<span class="s">"id"</span><span class="o">:</span>   <span class="m">555412345</span><span class="p">,</span>
+			<span class="s">"role"</span><span class="o">:</span> <span class="m">5</span><span class="p">,</span>
+		<span class="p">},</span>
+	<span class="p">},</span>
+	<span class="s">"books"</span><span class="o">:</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span>
+		<span class="s">"Intro to Java"</span><span class="o">:</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="k">interface</span><span class="p">{}{</span>
+			<span class="s">"description"</span><span class="o">:</span> <span class="s">"Introductory concepts of Programming using Java"</span><span class="p">,</span>
+			<span class="s">"required"</span><span class="o">:</span>    <span class="no">false</span><span class="p">,</span>
+			<span class="s">"ISBN"</span><span class="o">:</span>        <span class="m">12345421</span><span class="p">,</span>
+		<span class="p">},</span>
+	<span class="p">},</span>
+<span class="p">}</span>
+<span class="n">unstructuredData</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="n">unstructuredCourseData</span><span class="p">)</span>
+<span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">unstructuredData</span><span class="p">)</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="c">// prints: {"books":{"Intro to Java":{"ISBN":12345421,"description":"Introductory concepts of Programming using Java","required":false}},"courseNumber":101,"department":"CS","description":"Intro to Computer Science","enrollees":[{"id":555432432,"role":6},{"id":555412345,"role":5}]}</span>
+</code></pre></div></div>
+
+<p>In the example above, we create JSON from a rather complex map. While a struct may have made this much more manageable, the difficulty clearly presented itself in the map definition – not the <code class="highlighter-rouge">Marshal</code> process. So, if this method ends up being easier, then go for it!</p>
+
+</p>
+          </div>
+        </div><!-- .col-md-7 close -->
+      </div>
+    </div>
+  </section>
+</div>
+<p class="center-text" style="padding: 30px;">
+  <a href="/blog">Back to blog</a>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- footer Start -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="footer-manu">
+          <ul>
+            <li><a href="/">About Me</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </div>
+        <p>Copyright &copy; entended from original <a href="http://www.themefisher.com">Themefisher</a> Airspace theme. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135567050-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135567050-1');
+    </script>
+  
+</footer>
+
+
+    </body>
+</html>
