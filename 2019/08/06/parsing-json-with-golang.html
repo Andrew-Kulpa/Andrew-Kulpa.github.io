@@ -117,9 +117,9 @@
   <li><a href="#encoding-unstructured-data">Encoding Unstructured Data</a></li>
 </ul>
 
-<p>Parsing common data formats like JSON is a very common and necessary task for anyone using a typical RESTful API. In this blog post, we will go through the basics of using JSON with Go. We will look at the main JSON data types and how to work with them simply and idiomatically.</p>
+<p>JavaScript Object Notation (JSON) is a very common file format that is both human-readable and easily parsed. I mean, its so likely that you will come across it (if you haven’t already) that I wrote this article!</p>
 
-<p>(What is JSON)</p>
+<p>Parsing common data formats like JSON is a very standard and necessary task for anyone using a typical RESTful API. In this blog post, we will go through the basics of using JSON with Go. To do this, we will look at the main JSON data types and how to work with them simply and idiomatically.</p>
 
 <h2 id="parsing-json">Parsing JSON</h2>
 
@@ -172,7 +172,7 @@
 
 <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="n">course</span><span class="p">)</span>
 <span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
-<span class="c">//prints: {"CourseNumber":101,"Department":"CS","Description":"Intro to Computer Science"}</span>
+<span class="c">// prints: {"CourseNumber":101,"Department":"CS","Description":"Intro to Computer Science"}</span>
 </code></pre></div></div>
 
 <h2 id="json-tags">JSON Tags</h2>
@@ -192,7 +192,7 @@
 <span class="p">}</span>
 <span class="n">alteredData</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="n">alteredCourse</span><span class="p">)</span>
 <span class="n">fmt</span><span class="o">.</span><span class="n">Print</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">alteredData</span><span class="p">)</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
-<span class="c">//prints: {"courseNum":101,"dept":"CS","Title":"Intro to Computer Science"}</span>
+<span class="c">// prints: {"courseNum":101,"dept":"CS","Title":"Intro to Computer Science"}</span>
 </code></pre></div></div>
 <p>As demonstrated above, we first defined a new struct called <code class="highlighter-rouge">AlteredCourse</code> with something new called JSON tags. These JSON tags allow us to have different JSON object keys than the name of the struct variable that they came from. For instance, instead of outputing the key <code class="highlighter-rouge">CourseNumber</code> we output <code class="highlighter-rouge">courseNum</code>. This follows for the remaining JSON tags.</p>
 

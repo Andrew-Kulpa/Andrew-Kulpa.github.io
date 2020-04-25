@@ -9,6 +9,10 @@
 <lastmod>2019-08-06T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://andrew.kulpa.dev/2020/04/25/running-powershell-background-jobs.html</loc>
+<lastmod>2020-04-25T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://andrew.kulpa.dev/blog/</loc>
 </url>
 <url>
@@ -34,5 +38,8 @@
 </url>
 <url>
 <loc>https://andrew.kulpa.dev/blog/tag/JSON/</loc>
+</url>
+<url>
+<loc>https://andrew.kulpa.dev/blog/tag/PowerShell/</loc>
 </url>
 </urlset>

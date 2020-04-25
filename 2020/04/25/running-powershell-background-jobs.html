@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Running Background Processes in Powershell | Andrew Kulpa Personal Website</title>
+<meta name="msvalidate.01" content="80972D31A62F6BBDA100949B41EA9E91" />
+<meta name="description" content="In this article, the cmdlets we will go over are 'Start-Job', 'Get-Job', and 'Receive-Job' using a fairly simple example where we accumulate a count of all file typ...">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="og:url" content="https://andrew.kulpa.dev/2020/04/25/running-powershell-background-jobs.html">
+<meta name="og:title" content="Running Background Processes in Powershell">
+<meta name="og:type" content="article">
+<meta name="og:image" content="">
+<meta name="og:description" content="In this article, the cmdlets we will go over are 'Start-Job', 'Get-Job', and 'Receive-Job' using a fairly simple example where we accumulate a count of all file typ...">
+
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+<!-- CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/font-awesome.min.css" />
+<link rel="stylesheet" href="/css/airspace.css" />
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/ionicons.min.css" />
+<link rel="stylesheet" href="/css/animate.css" />
+<link rel="stylesheet" href="/css/responsive.css" />
+<link rel="stylesheet" href="/css/syntax.css" />
+
+
+<!-- Js -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+<script src="/js/vendor/jquery-1.10.2.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/plugins.js"></script>
+<script src="/js/min/waypoints.min.js"></script>
+<script src="/js/jquery.counterup.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+<!--
+/*
+ * Airspace
+ * Ported to Jekyll by Andrew Lee
+ * Extended as a professional portfolio site by Andrew Kulpa
+ * https://github.com/ndrewtl/airspace-jekyll
+ * Designed and Developed by ThemeFisher
+ * https://themefisher.com/
+ *
+ */
+-->
+
+
+  </head>
+  <body>
+
+
+    <!-- Header Start -->
+<header>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- header Nav Start -->
+      <nav class="navbar navbar-expand-lg navbar-light" id="nav-bar">
+          <a class="navbar-brand" href="/" id="header-img"><img id="brand-icon" src="/img/logo.png" alt="site brand logo"/></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse navbar-default" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-sm-3 justify-content-end">
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/">Home </a>
+                  </li>
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/projects/">Projects</a>
+                  </li>
+                  <li class="nav-item ">
+                    <a class="nav-link" href="/experience/">Experience</a>
+                  </li>
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/blog/">Blog</a>
+                  </li>
+                  <li class="nav-item ">
+                      <a class="nav-link" href="/contact/">Contact</a>
+                  </li>
+              </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header><!-- header close -->
+
+
+
+    <div class="post">
+  <!-- Wrapper Start -->
+  <section id="intro" style="border: 1px dotted #ddd;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="block">
+            <h1>Running Background Processes in Powershell</h1>
+            <div class="post-info-wrapper">
+              <p class="italic">By <span class="bold">Andrew Kulpa</span> on <span class="bold">April 25, 2020</span></p>
+            </div>
+            <hr />
+            <p><p>Suppose we’ve been tasked to run a long-running process on a client machine. We have many other tasks we need to complete in their environment, but we know that this one will take what seems like <em>forever</em>. Although we can open another PowerShell console session, we miss out on any variables in the current session.</p>
+
+<p>As you might have guessed by the title, the solution to this problem is to use PowerShell background jobs! In PowerShell, a <strong>background job</strong> is a command that runs in the background. A good way to see all the cmdlets that can be used for jobs is to run a <code class="highlighter-rouge">Get-Command</code> for the <code class="highlighter-rouge">Noun</code> <code class="highlighter-rouge">Job</code> like so:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Get-Command</span><span class="w"> </span><span class="nt">-Noun</span><span class="w"> </span><span class="nx">Job</span><span class="w">
+
+</span><span class="nf">CommandType</span><span class="w">     </span><span class="nx">Name</span><span class="w">                                               </span><span class="nx">Version</span><span class="w">    </span><span class="nx">Source</span><span class="w">
+</span><span class="nf">-----------</span><span class="w">     </span><span class="nf">----</span><span class="w">                                               </span><span class="nf">-------</span><span class="w">    </span><span class="nf">------</span><span class="w">
+</span><span class="nx">Cmdlet</span><span class="w">          </span><span class="nx">Debug-Job</span><span class="w">                                          </span><span class="nx">3.0.0.0</span><span class="w">    </span><span class="nx">Microsoft.PowerShell.Core</span><span class="w">
+</span><span class="nx">Cmdlet</span><span class="w">          </span><span class="nx">Get-Job</span><span class="w">                                            </span><span class="nx">3.0.0.0</span><span class="w">    </span><span class="nx">Microsoft.PowerShell.Core</span><span class="w">
+</span><span class="nx">Cmdlet</span><span class="w">          </span><span class="nx">Receive-Job</span><span class="w">                                        </span><span class="nx">3.0.0.0</span><span class="w">    </span><span class="nx">Microsoft.PowerShell.Core</span><span class="w">
+</span><span class="nx">Cmdlet</span><span class="w">          </span><span class="nx">Remove-Job</span><span class="w">                                         </span><span class="nx">3.0.0.0</span><span class="w">    </span><span class="nx">Microsoft.PowerShell.Core</span><span class="w">
+</span><span class="nf">Cmdlet</span><span class="w">          </span><span class="nx">Resume-Job</span><span class="w">                                         </span><span class="nx">3.0.0.0</span><span class="w">    </span><span class="nx">Microsoft.PowerShell.Core</span><span class="w">
+</span><span class="nf">Cmdlet</span><span class="w">          </span><span class="nx">Start-Job</span><span class="w">                                          </span><span class="nx">3.0.0.0</span><span class="w">    </span><span class="nx">Microsoft.PowerShell.Core</span><span class="w">
+</span><span class="nf">Cmdlet</span><span class="w">          </span><span class="nx">Stop-Job</span><span class="w">                                           </span><span class="nx">3.0.0.0</span><span class="w">    </span><span class="nx">Microsoft.PowerShell.Core</span><span class="w">
+</span><span class="nf">Cmdlet</span><span class="w">          </span><span class="nx">Suspend-Job</span><span class="w">                                        </span><span class="nx">3.0.0.0</span><span class="w">    </span><span class="nx">Microsoft.PowerShell.Core</span><span class="w">
+</span><span class="nf">Cmdlet</span><span class="w">          </span><span class="nx">Wait-Job</span><span class="w">                                           </span><span class="nx">3.0.0.0</span><span class="w">    </span><span class="nx">Microsoft.PowerShell.Core</span><span class="w">
+</span></code></pre></div></div>
+
+<p>In this article, the cmdlets we will go over are <code class="highlighter-rouge">Start-Job</code>, <code class="highlighter-rouge">Get-Job</code>, and <code class="highlighter-rouge">Receive-Job</code>.</p>
+
+<h2 id="starting-background-jobs">Starting Background Jobs</h2>
+
+<p>To start a background job, we use the <code class="highlighter-rouge">Start-Job</code> PowerShell cmdlet. A background job executes a given command outside the current session. The following is a fairly simple example where we accumulate a count of all file types recursively in the current directory:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># You can also provide input using the $input variable and an -Input argument!</span><span class="w">
+</span><span class="c"># This could then be used as the first argument instead of ".\".</span><span class="w">
+</span><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Start-Job</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w">   </span><span class="nf">Get-Childitem</span><span class="w"> </span><span class="s2">".\"</span><span class="w"> </span><span class="nt">-Recurse</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w">   </span><span class="nf">where</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">-not</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">PSIsContainer</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w">   </span><span class="nf">group</span><span class="w"> </span><span class="nx">Extension</span><span class="w"> </span><span class="nt">-NoElement</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w">   </span><span class="nf">sort</span><span class="w"> </span><span class="nx">count</span><span class="w"> </span><span class="nt">-Desc</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="p">}</span><span class="w">
+
+</span><span class="c"># Id     Name            PSJobTypeName   State         HasMoreData     Location             Command</span><span class="w">
+</span><span class="c"># --     ----            -------------   -----         -----------     --------             -------</span><span class="w">
+</span><span class="c"># 7      Job7            BackgroundJob   Running       True            localhost            ...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>As we saw, the output of the <code class="highlighter-rouge">Start-Job</code> cmdlet is an object that describes the background job. Most of these object parameters are quite useful. One thing we can note is that we should be able to set the <code class="highlighter-rouge">Name</code> of a job by invoking the cmdlet with a value passed to <code class="highlighter-rouge">-Name</code>.</p>
+
+<h2 id="checking-and-receiving-jobs">Checking and Receiving Jobs</h2>
+
+<p>In the last section we learned how to start a background job. Obviously with the job is running the background the job status could change at any time. We also want to get the output of the process! Let’s do this by starting another job to try out passing a value to <code class="highlighter-rouge">-Name</code> and then explore multiple ways of using the <code class="highlighter-rouge">Get-Job</code> command.</p>
+
+<p>First, let’s run the same command with the value <code class="highlighter-rouge">fileCounts</code> passed into <code class="highlighter-rouge">-Name</code>:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Start-Job</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">fileCounts</span><span class="w"> </span><span class="nt">-ScriptBlock</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w">   </span><span class="nf">Get-Childitem</span><span class="w"> </span><span class="s2">".\"</span><span class="w"> </span><span class="nt">-Recurse</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w">   </span><span class="nf">where</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">-not</span><span class="w"> </span><span class="bp">$_</span><span class="o">.</span><span class="nf">PSIsContainer</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w">   </span><span class="nf">group</span><span class="w"> </span><span class="nx">Extension</span><span class="w"> </span><span class="nt">-NoElement</span><span class="w"> </span><span class="o">|</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w">   </span><span class="nf">sort</span><span class="w"> </span><span class="nx">count</span><span class="w"> </span><span class="nt">-Desc</span><span class="w">
+</span><span class="err">&gt;&gt;</span><span class="w"> </span><span class="p">}</span><span class="w">
+
+</span><span class="nf">Id</span><span class="w">     </span><span class="nx">Name</span><span class="w">            </span><span class="nx">PSJobTypeName</span><span class="w">   </span><span class="nx">State</span><span class="w">         </span><span class="nx">HasMoreData</span><span class="w">     </span><span class="nx">Location</span><span class="w">             </span><span class="nx">Command</span><span class="w">
+</span><span class="nf">--</span><span class="w">     </span><span class="nf">----</span><span class="w">            </span><span class="nf">-------------</span><span class="w">   </span><span class="nf">-----</span><span class="w">         </span><span class="nf">-----------</span><span class="w">     </span><span class="nf">--------</span><span class="w">             </span><span class="nf">-------</span><span class="w">
+</span><span class="nx">9</span><span class="w">      </span><span class="nx">fileCounts</span><span class="w">      </span><span class="nx">BackgroundJob</span><span class="w">   </span><span class="nx">Running</span><span class="w">       </span><span class="nx">True</span><span class="w">            </span><span class="nx">localhost</span><span class="w">            </span><span class="o">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>That wasn’t much different, but we can clearly see that the value in <code class="highlighter-rouge">Name</code> is set to <code class="highlighter-rouge">fileCounts</code>! With that set, if we were to return to this machine we know what the background job was doing. Now lets try out the <code class="highlighter-rouge">Get-Job</code> cmdlet:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Get-Job</span><span class="w">
+
+</span><span class="nf">Id</span><span class="w">     </span><span class="nx">Name</span><span class="w">            </span><span class="nx">PSJobTypeName</span><span class="w">   </span><span class="nx">State</span><span class="w">         </span><span class="nx">HasMoreData</span><span class="w">     </span><span class="nx">Location</span><span class="w">             </span><span class="nx">Command</span><span class="w">
+</span><span class="nf">--</span><span class="w">     </span><span class="nf">----</span><span class="w">            </span><span class="nf">-------------</span><span class="w">   </span><span class="nf">-----</span><span class="w">         </span><span class="nf">-----------</span><span class="w">     </span><span class="nf">--------</span><span class="w">             </span><span class="nf">-------</span><span class="w">
+</span><span class="nx">7</span><span class="w">      </span><span class="nx">Job7</span><span class="w">            </span><span class="nx">BackgroundJob</span><span class="w">   </span><span class="nx">Completed</span><span class="w">     </span><span class="nx">False</span><span class="w">           </span><span class="nx">localhost</span><span class="w">            </span><span class="o">...</span><span class="w">
+</span><span class="nx">9</span><span class="w">      </span><span class="nx">fileCounts</span><span class="w">      </span><span class="nx">BackgroundJob</span><span class="w">   </span><span class="nx">Completed</span><span class="w">     </span><span class="nx">True</span><span class="w">            </span><span class="nx">localhost</span><span class="w">            </span><span class="o">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>It returns pretty much the same output as before, but it includes <code class="highlighter-rouge">Job7</code> and has a <code class="highlighter-rouge">State</code> of <code class="highlighter-rouge">Completed</code>. If we wanted to filter the results of <code class="highlighter-rouge">Get-Job</code> we can also filter by setting a value for either <code class="highlighter-rouge">-Id</code> or <code class="highlighter-rouge">-Name</code>:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Get-Job</span><span class="w"> </span><span class="nt">-Id</span><span class="w"> </span><span class="nx">9</span><span class="w">
+
+</span><span class="nf">Id</span><span class="w">     </span><span class="nx">Name</span><span class="w">            </span><span class="nx">PSJobTypeName</span><span class="w">   </span><span class="nx">State</span><span class="w">         </span><span class="nx">HasMoreData</span><span class="w">     </span><span class="nx">Location</span><span class="w">             </span><span class="nx">Command</span><span class="w">
+</span><span class="nf">--</span><span class="w">     </span><span class="nf">----</span><span class="w">            </span><span class="nf">-------------</span><span class="w">   </span><span class="nf">-----</span><span class="w">         </span><span class="nf">-----------</span><span class="w">     </span><span class="nf">--------</span><span class="w">             </span><span class="nf">-------</span><span class="w">
+</span><span class="nx">9</span><span class="w">      </span><span class="nx">fileCounts</span><span class="w">      </span><span class="nx">BackgroundJob</span><span class="w">   </span><span class="nx">Completed</span><span class="w">     </span><span class="nx">True</span><span class="w">            </span><span class="nx">localhost</span><span class="w">            </span><span class="o">...</span><span class="w">
+
+</span><span class="nx">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Get-Job</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">fileCounts</span><span class="w">
+
+</span><span class="nx">Id</span><span class="w">     </span><span class="nx">Name</span><span class="w">            </span><span class="nx">PSJobTypeName</span><span class="w">   </span><span class="nx">State</span><span class="w">         </span><span class="nx">HasMoreData</span><span class="w">     </span><span class="nx">Location</span><span class="w">             </span><span class="nx">Command</span><span class="w">
+</span><span class="nf">--</span><span class="w">     </span><span class="nf">----</span><span class="w">            </span><span class="nf">-------------</span><span class="w">   </span><span class="nf">-----</span><span class="w">         </span><span class="nf">-----------</span><span class="w">     </span><span class="nf">--------</span><span class="w">             </span><span class="nf">-------</span><span class="w">
+</span><span class="nx">9</span><span class="w">      </span><span class="nx">fileCounts</span><span class="w">      </span><span class="nx">BackgroundJob</span><span class="w">   </span><span class="nx">Completed</span><span class="w">     </span><span class="nx">True</span><span class="w">            </span><span class="nx">localhost</span><span class="w">            </span><span class="o">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>That’s great that we can now run a background job and check the status, but its likely we also want the output of the command that was ran. To do this, we’ll use <code class="highlighter-rouge">Receive-Job</code> which has the same filters we used earlier. Let’s run the cmdlet for the first job we ran:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Receive-Job</span><span class="w"> </span><span class="nt">-Id</span><span class="w"> </span><span class="nx">7</span><span class="w">
+
+</span><span class="nf">Count</span><span class="w"> </span><span class="nx">Name</span><span class="w">
+</span><span class="nf">-----</span><span class="w"> </span><span class="nf">----</span><span class="w">
+    </span><span class="nx">1</span><span class="w"> </span><span class="o">.</span><span class="nf">txt</span><span class="w">
+    </span><span class="nx">1</span><span class="w"> </span><span class="o">.</span><span class="nf">rtf</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Awesome! Is that it? Maybe. Would running it again give us the same output? Lets try:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Receive-Job</span><span class="w"> </span><span class="nt">-Id</span><span class="w"> </span><span class="nx">7</span><span class="w">
+</span><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w">
+</span></code></pre></div></div>
+
+<p>That’s a big no. To keep the output of the job we need to add the <code class="highlighter-rouge">-Keep</code> parameter. Let’s try that again with the <code class="highlighter-rouge">fileCounts</code> background job:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Receive-Job</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">fileCounts</span><span class="w"> </span><span class="nt">-Keep</span><span class="w">
+
+</span><span class="nf">Count</span><span class="w"> </span><span class="nx">Name</span><span class="w">
+</span><span class="nf">-----</span><span class="w"> </span><span class="nf">----</span><span class="w">
+    </span><span class="nx">1</span><span class="w"> </span><span class="o">.</span><span class="nf">txt</span><span class="w">
+    </span><span class="nx">1</span><span class="w"> </span><span class="o">.</span><span class="nf">rtf</span><span class="w">
+
+
+</span><span class="nx">PS</span><span class="w"> </span><span class="nx">C:\Users\andrew.kulpa\Documents</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Receive-Job</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">fileCounts</span><span class="w"> </span><span class="nt">-Keep</span><span class="w">
+
+</span><span class="nf">Count</span><span class="w"> </span><span class="nx">Name</span><span class="w">
+</span><span class="nf">-----</span><span class="w"> </span><span class="nf">----</span><span class="w">
+    </span><span class="nx">1</span><span class="w"> </span><span class="o">.</span><span class="nf">txt</span><span class="w">
+    </span><span class="nx">1</span><span class="w"> </span><span class="o">.</span><span class="nf">rtf</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Well there we go! We have successfully starting a background job, checked the status of the job, and received the output of the job. There are many cmdlets we have not gone over yet, so if you’re interested in learning more check out the cmdlets we saw earlier and explore the <a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_jobs?view=powershell-7">about_jobs</a> documentation!</p>
+<h2 id="further-reading">Further Reading</h2>
+
+<p>Documentation:</p>
+<ul>
+  <li><a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_jobs?view=powershell-7">about_Jobs</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/start-job?view=powershell-7">Start-Job</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/get-job?view=powershell-7">Get-Job</a></li>
+  <li><a href="https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/receive-job?view=powershell-7">Receive-Job</a></li>
+</ul>
+</p>
+          </div>
+        </div><!-- .col-md-7 close -->
+      </div>
+    </div>
+  </section>
+</div>
+<p class="center-text" style="padding: 30px;">
+  <a href="/blog">Back to blog</a>
+</p>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- footer Start -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="footer-manu">
+          <ul>
+            <li><a href="/">About Me</a></li>
+            <li><a href="/projects/">Projects</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </div>
+        <p>Copyright &copy; entended from original <a href="http://www.themefisher.com">Themefisher</a> Airspace theme. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135567050-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-135567050-1');
+    </script>
+  
+</footer>
+
+
+    </body>
+</html>
